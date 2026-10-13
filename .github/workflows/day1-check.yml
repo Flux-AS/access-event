@@ -16,7 +16,7 @@ jobs:
               echo "PASS: $f found"
               SIZE=$(wc -c < "$f")
               if [ "$SIZE" -lt 500 ]; then
-                echo "FAIL: $f is too small ($SIZE bytes, need >= 500)"
+                echo "FAIL: $f is too small ($SIZE bytes, need >= 40)"
                 exit 1
               fi
             else
