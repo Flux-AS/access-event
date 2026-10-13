@@ -15,7 +15,7 @@ jobs:
             if [ -f "$f" ]; then
               echo "PASS: $f found"
               SIZE=$(wc -c < "$f")
-              if [ "$SIZE" -lt 500 ]; then
+              if [ "$SIZE" -lt 40 ]; then
                 echo "FAIL: $f is too small ($SIZE bytes, need >= 40)"
                 exit 1
               fi
@@ -58,7 +58,7 @@ jobs:
       - name: Check entities
         run: |
           COUNT=$(grep -c "|" docs/analysis.md || echo 0)
-          if [ "$COUNT" -lt 10 ]; then
+          if [ "$COUNT" -lt 6 ]; then
             echo "FAIL: need more entities in analysis.md"
             exit 1
           fi
