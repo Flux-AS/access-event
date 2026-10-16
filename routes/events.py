@@ -7,7 +7,7 @@ from utils.accessibility import format_event_response
 events_bp = Blueprint("events", __name__)
 
 
-@events_bp.route("/events", methods=["GET"])
+@events_bp.route("/api/events", methods=["GET"])
 def list_events():
     query = Event.query
     if request.args.get("inclusive") in ("1", "true"):
@@ -16,13 +16,13 @@ def list_events():
     return jsonify([format_event_response(e) for e in events]), 200
 
 
-@events_bp.route("/events/<int:event_id>", methods=["GET"])
+@events_bp.route("/api/events/<int:event_id>", methods=["GET"])
 def get_event(event_id):
     event = Event.query.get_or_404(event_id)
     return jsonify(format_event_response(event)), 200
 
 
-@events_bp.route("/events", methods=["POST"])
+@events_bp.route("/api/events", methods=["POST"])
 @token_required
 @role_required("organizer", "admin")
 def create_event(user):
@@ -46,10 +46,10 @@ def create_event(user):
     )
     db.session.add(event)
     db.session.commit()
-    return jsonify({"message": "Мероприятие создано", "event_id": event.id}), 201
+    return jsonify({"message": "Мероприятие создано", "id": event.id}), 201
 
 
-@events_bp.route("/events/<int:event_id>", methods=["PUT"])
+@events_bp.route("/api/events/<int:event_id>", methods=["PUT"])
 @token_required
 @role_required("organizer", "admin")
 def update_event(user, event_id):
@@ -67,7 +67,7 @@ def update_event(user, event_id):
     return jsonify(format_event_response(event)), 200
 
 
-@events_bp.route("/events/<int:event_id>", methods=["DELETE"])
+@events_bp.route("/api/events/<int:event_id>", methods=["DELETE"])
 @token_required
 @role_required("organizer", "admin")
 def delete_event(user, event_id):

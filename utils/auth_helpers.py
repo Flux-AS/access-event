@@ -30,8 +30,7 @@ def token_required(f):
             return jsonify({"message": "Токен отсутствует"}), 401
         token = auth_header.split("Bearer ", 1)[1]
         try:
-            data = jwt.decode(token, current_app.config["SECRET_KEY"],
-                              algorithms=["HS256"])
+            data = jwt.decode(token, current_app.config["SECRET_KEY"], algorithms=["HS256"])
         except jwt.ExpiredSignatureError:
             return jsonify({"message": "Срок действия токена истёк"}), 401
         except jwt.InvalidTokenError:

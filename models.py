@@ -44,17 +44,6 @@ class Event(db.Model):
 
     registrations = db.relationship("Registration", backref="event", lazy=True)
 
-    def __init__(self, **kwargs):
-        date_val = kwargs.get("event_date")
-        if isinstance(date_val, str):
-            for fmt in ("%Y-%m-%d %H:%M:%S", "%Y-%m-%dT%H:%M:%S", "%Y-%m-%d"):
-                try:
-                    kwargs["event_date"] = datetime.datetime.strptime(date_val, fmt)
-                    break
-                except ValueError:
-                    continue
-        super().__init__(**kwargs)
-
 
 class Registration(db.Model):
     __tablename__ = "registrations"
@@ -68,4 +57,8 @@ class Registration(db.Model):
 
     __table_args__ = (
         db.UniqueConstraint("user_id", "event_id"),
+        db.CheckConstraint(
+            status.in_(["pending", "confirmed", "cancelled"]),
+            name="ck_registration_status",
+        ),
     )

@@ -6,7 +6,7 @@ from utils.auth_helpers import generate_token
 auth_bp = Blueprint("auth", __name__)
 
 
-@auth_bp.route("/register", methods=["POST"])
+@auth_bp.route("/api/register", methods=["POST"])
 def register():
     data = request.get_json(silent=True) or {}
     username = (data.get("username") or "").strip()
@@ -37,7 +37,7 @@ def register():
     return jsonify({"message": "Пользователь создан", "user_id": user.id}), 201
 
 
-@auth_bp.route("/login", methods=["POST"])
+@auth_bp.route("/api/login", methods=["POST"])
 def login():
     data = request.get_json(silent=True) or {}
     email = (data.get("email") or "").strip().lower()
